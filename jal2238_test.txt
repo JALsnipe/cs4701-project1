@@ -1,0 +1,83 @@
+Pattern Matcher Test Cases
+
+CL-USER 1 > (match '() '())
+T
+
+CL-USER 2 > (match '(ai) '(ai))
+T
+
+CL-USER 3 > (match '(ai cs) '(ai cs))
+T
+
+CL-USER 4 > (match '(cs ai) '(ai cs))
+NIL
+
+CL-USER 5 > (match '(1 2 3 0) '(1 2 3 4 0))
+NIL
+
+CL-USER 6 > (match '(? mudd) '(seely mudd))
+T
+
+CL-USER 7 > (match '(?first ?middle mudd) '(seely w mudd))
+((?MIDDLE . W) (?FIRST . SEELY))
+
+CL-USER 8 > (match '(? ?x ? ?y ?) '(Warren Buffet Is A Good Man))
+NIL
+
+CL-USER 9 > (match '(School Of Engineering and Applied Science) '(School Of Engineering))
+NIL
+
+CL-USER 10 > (match '(* School Of Engineering and Applied Science) '(The Fu Foundation School Of Engineering and Applied Science))
+T
+
+CL-USER 11 > (match '(The * School Of Engineering and Applied Science) '(The Fu Foundation School Of Engineering and Applied Science))
+T
+
+CL-USER 12 > (match '(The * School Of Engineering and Applied Science) '(The School Of Engineering and Applied Science))
+T
+
+CL-USER 13 > (match '(* 3 ?x 4 *) '(3 5 4))
+((?X . 5))
+
+CL-USER 14 > (match '( ?x (1 2) ?y (4 5)) '(c (1 2) d (4 5)))
+((?Y . D) (?X . C))
+
+CL-USER 15 > (match '(?y ?z (c v)) '(8 gh (c v) ))
+((?Z . GH) (?Y . 8))
+
+CL-USER 16 > (match '(((get) me) out) '(get (me (out))))
+Error: ((GET) ME) is not of type SYMBOL.
+Desired output: NIL
+
+CL-USER 17 > (match '(A * B) '(A A A A A B))
+T
+
+CL-USER 18 > (match '(?x * ?y) '(A A A A A B))
+((?Y . B) (?X . A))
+
+CL-USER 19 > (match '(a ?x !x) '(a 5 5))
+NIL
+
+CL-USER 20 > (match '(a ?x !x) '(a 5 4))
+((?X . 5))
+
+CL-USER 21 > (match '(a ?x ?y) '(a (a b) c))
+((?Y . C) (?X A B))
+
+CL-USER 22 > (match '(?x ?y ?z (& <x >y !z)) '(10 5 7 8))
+((?Z . 7) (?Y . 5) (?X . 10))
+
+CL-USER 23 > (match '(ai ?y !y) '(ai cs cs))
+NIL
+
+CL-USER 24 > (match '(ai ?x ?y (& ?x ?y)) '(ai cs cs cs))
+((?Y . CS) (?X . CS))
+
+CL-USER 25 > (match '(* ?x * ?y (& !x !y)) '(a b c d))
+(((?Y . C) (?X . B)) ((?Y . C) (?X . A)))
+
+Horrible Example:
+CL-USER 26 > (match '(((((* ?x * (* ((* ?y * ?) (?z b)) (* ?u)) ? g *)))) * ?v ? t) '(((((8 x (z ((y x z f g) (z b)) (a b u)) g g)))) v t t))
+Error: (* ((* ?Y * ?) (?Z B)) (* ?U)) is not of type SYMBOL.
+Desired output: (((?V V) (?U U) (?Z Z) (?Y F) (?X X)) ((?V V) (?U U) (?Z Z) (?Y Z) (?X X)) ((?V V) (?U U) (?Z Z) (?Y X) (?X X)) ((?V V) (?U U) (?Z Z) (?Y Y) (?X X)) ((?V V) (?U U) (?Z Z) (?Y F) (?X 8)) ((?V V) (?U U) (?Z Z) (?Y Z) (?X 8)) ((?V V) (?U U) (?Z Z) (?Y X) (?X 8)) ((?V V) (?U U) (?Z Z) (?Y Y) (?X 8)))
+
