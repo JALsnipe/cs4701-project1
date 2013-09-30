@@ -19,12 +19,15 @@
    (t ;else
     (let ((a (car list1)) (b (car list2))) ;a is the car of list1 and b is the car of list2
         (cond 
+         ((and (and (equal (listp a) nil) (listp b)) (not (equal (elt (symbol-name a) 0) #\?))) nil) ;this is supposed to fix the get me out example, but breaks other test cases
+         ((and (equal (listp b) nil) (and (listp a) (not (equal (car a) '&)))) nil)
          ((numberp a) (if (equal a b)(if (null c) (comp-q2 (cdr list1) (cdr list2) c) c))) ;test to make sure numbers work as well as symbols
          ((and (listp a) (equal (car a) '&))
          ; (and (comp-q2 (cdr list1) (cdr list2) c)
           (if (amp (cdr a) b c)
               (comp-q2 (cdr list1) (cdr list2) c)
             nil))
+         
               
          ((and (listp a) (listp b)) ;if, evaluate the first thing in the list - are a and b lists?
                (and (comp-q2 a b c) ;recursive call on a and b
@@ -49,6 +52,7 @@
                 ;((and (equal (comp-q2 list1 (cdr list2) c) nil) (listp (comp-q2 (cdr list1) list2 c))) (comp-q2 (cdr list1) list2 c)) ;if one is nil and the other is a pair, return the pair
                ))
               ((and (equal (elt (symbol-name a) 0) #\?) (> (length (symbol-name a)) 1)) ;if we have a ? variable, wrap this into another function? (similar to ! and < >) convert ! and < > to ?
+
                (if (assoc a c) ;if the variable is already assigned
                    (if (equal (cdr (assoc a c)) b) ;check if it's the same value
                        (comp-q2 (cdr list1) (cdr list2) c) ;if so, continue
