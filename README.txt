@@ -14,7 +14,7 @@ CLISP and SBCL:
 Load "jal2238.lisp" and use the entry function (match '(pattern) '(data)).
 
 CLISP:
-jal2238@brussels:~$ clisp
+jal2238@vienna:~$ clisp
   i i i i i i i       ooooo    o        ooooooo   ooooo   ooooo
   I I I I I I I      8     8   8           8     8     o  8    8
   I  \ `+' /  I      8         8           8     8        8    8
@@ -41,10 +41,10 @@ T
 ((?Z . 7) (?Y . 5) (?X . 10))
 [3]> (quit)
 Bye.
-jal2238@brussels:~$
+jal2238@vienna:~$
 
 SBCL:
-dyn-160-39-229-22:jal2238_Project_1_Common_Lisp joshlieberman$ sbcl
+Josh-Liebermans-MacBook-Pro:jal2238_Project_1_Common_Lisp joshlieberman$ sbcl
 This is SBCL 1.1.8.0-19cda10, an implementation of ANSI Common Lisp.
 More information about SBCL is available at <http://www.sbcl.org/>.
 
@@ -52,11 +52,10 @@ SBCL is free software, provided as is, with absolutely no warranty.
 It is mostly in the public domain; some portions are provided under
 BSD-style licenses.  See the CREDITS and COPYING files in the
 distribution for more information.
-l* ^R
-(load "/Users/joshlieberman/workspace/lisp/cs4701/jal2238_Project_1_Common_Lisp/jal2238.lisp")
+* (load "/Users/joshlieberman/workspace/lisp/cs4701/jal2238_Project_1_Common_Lisp/jal2238.lisp")
 
 ; file: /Users/joshlieberman/workspace/lisp/cs4701/jal2238_Project_1_Common_Lisp/jal2238.lisp
-; in: DEFUN COMP-Q2
+; in: DEFUN MATCHER
 ;     (AMP (CDR A) B C)
 ;
 ; caught STYLE-WARNING:
@@ -72,7 +71,7 @@ T
 
 ((?Z . 7) (?Y . 5) (?X . 10))
 * (quit)
-dyn-160-39-229-22:jal2238_Project_1_Common_Lisp joshlieberman$
+Josh-Liebermans-MacBook-Pro:jal2238_Project_1_Common_Lisp joshlieberman$
 
 LispWorks:
 Open lispworks.  Navigate to File -> Open... and open "jal2238.lisp."  Then navigate to File -> Compile and Load...  The file should load without issue:
@@ -85,7 +84,7 @@ Output:
 ;;; Source file recording is  on
 ;;; Cross referencing is on
 ; (TOP-LEVEL-FORM 0)
-; COMP-Q2
+; MATCHER
 ; MATCH
 ; AMP
 ;; Processing Cross Reference Information
@@ -102,6 +101,16 @@ CL-USER 1 > (match '(?x ?y ?z (& <x >y !z)) '(10 5 7 8))
 Function:
 My Common Lisp program is heavily commented to describe the function of each section.  This pattern matcher takes two lists as an input, a pattern and a matcher.  The program will return T if the pattern and matcher match, nil if they don't, or a pair of variable bindings if they were assigned by the pattern.
 
+My program uses three functions: match, matcher, and amp.
+match: The entry function.  Takes in two lists from the user in the format (match '(pattern) '(matcher/data))
+matcher: The main function.  Compares and element of the list pattern to one in the matcher list using recursive calls.
+amp: Special function to handle ampersand (&) cases.
+
+My program also uses three variables: list1, list2, and c.
+list1: The input list for the pattern.
+list2: The input list for the matcher/data.
+c: The association list that returns variable pairs when necessary.
+
 As seen in the "jal2238_test.txt" test cases file, my code works for all 25 examples used in the assignment_1.txt instruction file.  The only case that my program fails is the "Horrible Example" given in class.  Somewhere in my program my logic is flawed, but because it works for all test cases except for this one and I am pressed for time, I am handing the program in as-is.
 
-My prgram has been tested and works with CLISP 2.49 on the CLIC Lab machines.
+My program has been tested and works with CLISP 2.49 on the CLIC Lab machines.
